@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RecyclerView</string>
+    <string name="arrow">Arrow</string>
+
+    <string name="test_name" translatable="false">Don Jhoe</string>
+    <string name="test_title" translatable="false">Engineer</string>
+    <string name="test_description" translatable="false">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci commodi, consequuntur dolor eaque in itaque laboriosam non nulla omnis pariatur porro possimus quae, qui quia quis quos sit vero voluptas.</string>
+</resources>

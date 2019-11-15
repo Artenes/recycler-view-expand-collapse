@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ListItem">
+        <attr name="personName" format="reference"/>
+        <attr name="personTitle" format="reference"/>
+        <attr name="personDescription" format="reference"/>
+    </declare-styleable>
+
+</resources>
