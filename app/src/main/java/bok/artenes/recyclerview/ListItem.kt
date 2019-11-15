@@ -8,26 +8,29 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 
-class ListItem(context: Context, attrs: AttributeSet): FrameLayout(context, attrs), View.OnClickListener {
+class ListItem(context: Context, attrs: AttributeSet?): FrameLayout(context, attrs), View.OnClickListener {
+
+    constructor(context: Context): this(context, null)
 
     private val textViewName: TextView
     private val textViewTitle: TextView
     private val textViewDescription: TextView
     private val imageViewArrow: ImageView
+    private val constraintLayoutHeader: ConstraintLayout
     private var isExpanded: Boolean = false
 
     init {
 
         View.inflate(context, R.layout.list_item, this)
 
-        val header = findViewById<ConstraintLayout>(R.id.constraintLayoutHeader)
+        constraintLayoutHeader = findViewById(R.id.constraintLayoutHeader)
         textViewName = findViewById(R.id.textViewName)
         textViewTitle = findViewById(R.id.textViewTitle)
         textViewDescription = findViewById(R.id.textViewDescription)
         imageViewArrow = findViewById(R.id.imageViewArrow)
 
         textViewDescription.layoutParams.height = 0
-        header.setOnClickListener(this)
+        constraintLayoutHeader.setOnClickListener(this)
 
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.ListItem)
         textViewName.text = attributes.getString(R.styleable.ListItem_personName)
@@ -58,6 +61,10 @@ class ListItem(context: Context, attrs: AttributeSet): FrameLayout(context, attr
             imageViewArrow.animate().setDuration(200).rotation(0F)
             textViewDescription.startAnimation(CollapseAnimation(textViewDescription))
         }
+    }
+
+    override fun setOnClickListener(listener: OnClickListener?) {
+        constraintLayoutHeader.setOnClickListener(listener)
     }
 
     override fun onClick(v: View?) {

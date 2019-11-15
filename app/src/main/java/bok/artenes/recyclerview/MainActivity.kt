@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -14,11 +15,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        val adapter = UsersAdapter()
+        val adapter = UsersAdapter(viewModel)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         recyclerViewUser.adapter = adapter
         recyclerViewUser.layoutManager = layoutManager
+        (recyclerViewUser.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
 
         viewModel.getUsers().observe(this, Observer {
             adapter.submitList(it)
