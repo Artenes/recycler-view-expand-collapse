@@ -1,5 +1,6 @@
 package bok.artenes.recyclerview
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -20,17 +21,25 @@ class UsersAdapter(val viewModel: MainActivityViewModel) : ListAdapter<UserItem,
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val user = getItem(position)
-        holder.listItem.setName(user.name)
-        holder.listItem.setTitle(user.title)
-        holder.listItem.setDescription(user.description)
-        holder.listItem.setExpanded(user.expanded)
-        holder.listItem.setOnClickListener {
-            viewModel.toggleUserDescription(user)
-        }
+        holder.bind(position)
     }
 
-    class TaskViewHolder(val listItem: ListItem) : RecyclerView.ViewHolder(listItem)
+    inner class TaskViewHolder(private val listItem: ListItem) : RecyclerView.ViewHolder(listItem),  View.OnClickListener {
+
+        fun bind(position: Int) {
+            val user = getItem(position)
+            listItem.setName(user.name)
+            listItem.setTitle(user.title)
+            listItem.setDescription(user.description)
+            listItem.setExpanded(user.expanded)
+            listItem.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            viewModel.toggleUserDescription(getItem(adapterPosition))
+        }
+
+    }
 
     companion object {
 
