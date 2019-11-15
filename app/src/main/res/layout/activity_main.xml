@@ -7,11 +7,22 @@
     tools:context=".MainActivity">
 
     <bok.artenes.recyclerview.ListItem
+        android:id="@+id/listItemDon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:personDescription="@string/test_description"
+        app:personName="@string/test_name"
+        app:personTitle="@string/test_title" />
+
+    <bok.artenes.recyclerview.ListItem
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/listItemDon"
         app:personDescription="@string/test_description"
         app:personName="@string/test_name"
         app:personTitle="@string/test_title" />
