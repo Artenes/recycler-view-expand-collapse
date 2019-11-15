@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class ListItem(context: Context, attrs: AttributeSet): FrameLayout(context, attrs), View.OnClickListener {
 
@@ -19,13 +20,14 @@ class ListItem(context: Context, attrs: AttributeSet): FrameLayout(context, attr
 
         View.inflate(context, R.layout.list_item, this)
 
+        val header = findViewById<ConstraintLayout>(R.id.constraintLayoutHeader)
         textViewName = findViewById(R.id.textViewName)
         textViewTitle = findViewById(R.id.textViewTitle)
         textViewDescription = findViewById(R.id.textViewDescription)
         imageViewArrow = findViewById(R.id.imageViewArrow)
 
         textViewDescription.layoutParams.height = 0
-        imageViewArrow.setOnClickListener(this)
+        header.setOnClickListener(this)
 
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.ListItem)
         textViewName.text = attributes.getString(R.styleable.ListItem_personName)
@@ -59,7 +61,7 @@ class ListItem(context: Context, attrs: AttributeSet): FrameLayout(context, attr
     }
 
     override fun onClick(v: View?) {
-        if (v?.id == R.id.imageViewArrow) {
+        if (v?.id == R.id.constraintLayoutHeader) {
             setExpanded(!isExpanded)
         }
     }
