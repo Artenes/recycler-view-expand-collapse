@@ -12,6 +12,9 @@ class ExpandAnimation(private val view: View) : Animation() {
 
     init {
         duration = 250
+        //FIXME view should be 286px height
+        // but it return 138px on measure
+        // maybe this has relation with lack of padding?
         view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         realHeight = view.measuredHeight
     }
