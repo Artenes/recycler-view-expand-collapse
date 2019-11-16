@@ -18,7 +18,7 @@ class ListItemOpenAnimation(
         this.duration = duration
         //the max width is necessary so it can calculates how height the view is when we give UNSPECIFIED
         val view = listItem.getDescriptionView()
-        val width = View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY)
+        val width = View.MeasureSpec.makeMeasureSpec((view.parent as View).width, View.MeasureSpec.EXACTLY)
         val height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         view.measure(width, height)
         realHeight = view.measuredHeight

@@ -10,7 +10,7 @@ class UserListToggleAnimator(private val recyclerView: RecyclerView) {
         val openAnimation = makeOpenAnimation(payload.toOpen)
 
         if (closeAnimation != null && openAnimation != null) {
-            openAnimation.startOffset = 250
+            openAnimation.startOffset = ANIMATION_DURATION
         }
 
         closeAnimation?.start()
@@ -19,16 +19,20 @@ class UserListToggleAnimator(private val recyclerView: RecyclerView) {
 
     private fun makeCloseAnimation(position: Int): Animation? {
         val toCloseView = getListItem(position) ?: return null
-        return ListItemCloseAnimation(toCloseView, 250)
+        return ListItemCloseAnimation(toCloseView, ANIMATION_DURATION)
     }
 
     private fun makeOpenAnimation(position: Int): Animation? {
         val toOpenView = getListItem(position) ?: return null
-        return ListItemOpenAnimation(toOpenView, recyclerView, position, 250)
+        return ListItemOpenAnimation(toOpenView, recyclerView, position, ANIMATION_DURATION)
     }
 
     private fun getListItem(position: Int): ListItem? {
         return ((recyclerView.findViewHolderForAdapterPosition(position) as UsersAdapter.TaskViewHolder?)?.itemView as ListItem?)
+    }
+
+    companion object {
+        const val ANIMATION_DURATION = 250L
     }
 
 }
