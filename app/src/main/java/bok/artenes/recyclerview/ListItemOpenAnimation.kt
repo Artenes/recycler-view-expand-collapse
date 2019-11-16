@@ -29,6 +29,7 @@ class ListItemOpenAnimation(
     override fun start() {
         super.start()
         listItem.getArrowView().animate().setDuration(duration).rotation(180F)
+        listItem.getDescriptionView().startAnimation(this)
     }
 
     override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {

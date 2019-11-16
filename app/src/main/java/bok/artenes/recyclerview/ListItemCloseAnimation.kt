@@ -12,6 +12,7 @@ class ListItemCloseAnimation(private val listItem: ListItem, duration: Long) : A
     override fun start() {
         super.start()
         listItem.getArrowView().animate().setDuration(duration).rotation(0F)
+        listItem.getDescriptionView().startAnimation(this)
     }
 
     override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
