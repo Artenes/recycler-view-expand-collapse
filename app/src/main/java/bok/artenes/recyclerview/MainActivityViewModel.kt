@@ -10,6 +10,8 @@ class MainActivityViewModel : ViewModel() {
     private val repository = UsersRepository()
 
     private val users: MutableLiveData<List<UserItem>> = MutableLiveData(emptyList())
+    //FIXME this should be consumed only once after being emitted
+    private val animateToggle: MutableLiveData<ToggleAnimationPayload> = MutableLiveData()
 
     private val usersObserver = Observer<List<User>> {
         val userItemList = users.value ?: emptyList()
@@ -28,23 +30,30 @@ class MainActivityViewModel : ViewModel() {
         return users
     }
 
+    fun getAnimateToggle(): LiveData<ToggleAnimationPayload> {
+        return animateToggle
+    }
+
     fun toggleUserDescription(user: UserItem) {
         val users = users.value?.toMutableList() ?: mutableListOf()
 
-        val isGoingToExpand = !user.expanded
+        val toClose: Int
+        var toOpen: Int = -1
+        val isGoingToOpen = !user.expanded
 
-        val expandedIndex = users.indexOfFirst { it.expanded }
-        if (expandedIndex > -1) {
-            users[expandedIndex] = users[expandedIndex].copy(expanded = false)
+        toClose = users.indexOfFirst { it.expanded }
+        if (toClose > -1) {
+            users[toClose] = users[toClose].copy(expanded = false)
         }
 
-        if (isGoingToExpand) {
-            val index = users.indexOf(user)
-            if (index > -1) {
-                users[index] = user.copy(expanded = true)
+        if (isGoingToOpen) {
+            toOpen = users.indexOf(user)
+            if (toOpen > -1) {
+                users[toOpen] = user.copy(expanded = true)
             }
         }
 
+        animateToggle.value = ToggleAnimationPayload(toClose, toOpen)
         this.users.value = users
     }
 

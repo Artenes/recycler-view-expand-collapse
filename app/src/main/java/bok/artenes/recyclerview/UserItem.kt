@@ -8,6 +8,14 @@ data class UserItem(
     val expanded: Boolean
 ) {
 
+    override fun equals(other: Any?): Boolean {
+        if (other == null) {
+            return false
+        }
+        val otherUser = other as UserItem
+        return otherUser.id == id && otherUser.name == name && otherUser.title == title && otherUser.description == description
+    }
+
     companion object {
 
         fun from(user: User, expanded: Boolean): UserItem {

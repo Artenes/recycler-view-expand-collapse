@@ -21,9 +21,14 @@ class MainActivity : AppCompatActivity() {
         recyclerViewUser.adapter = adapter
         recyclerViewUser.layoutManager = layoutManager
         (recyclerViewUser.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
+        val animator = UserListToggleAnimator(recyclerViewUser)
 
         viewModel.getUsers().observe(this, Observer {
             adapter.submitList(it)
+        })
+
+        viewModel.getAnimateToggle().observe(this, Observer {
+            animator.animate(it)
         })
     }
 }

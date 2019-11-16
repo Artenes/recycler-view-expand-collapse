@@ -1,16 +1,21 @@
 package bok.artenes.recyclerview
 
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
 
-class CollapseAnimation(private val view: View) : Animation() {
+class ListItemCloseAnimation(private val listItem: ListItem, duration: Long) : Animation() {
 
     init {
-        duration = 250
+        this.duration = duration
+    }
+
+    override fun start() {
+        super.start()
+        listItem.getArrowView().animate().setDuration(duration).rotation(0F)
     }
 
     override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+        val view = listItem.getDescriptionView()
         view.layoutParams.height =
             view.measuredHeight - (view.measuredHeight * interpolatedTime).toInt()
         view.requestLayout()

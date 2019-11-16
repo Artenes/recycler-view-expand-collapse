@@ -50,7 +50,7 @@ class UsersAdapter(val viewModel: MainActivityViewModel) : ListAdapter<UserItem,
             }
 
             override fun areContentsTheSame(oldItem: UserItem, newItem: UserItem): Boolean {
-                return oldItem.hashCode() == newItem.hashCode()
+                return oldItem == newItem
             }
         }
 

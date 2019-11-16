@@ -8,16 +8,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 
-class ListItem(context: Context, attrs: AttributeSet?): FrameLayout(context, attrs), View.OnClickListener {
+class ListItem(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
-    constructor(context: Context): this(context, null)
+    constructor(context: Context) : this(context, null)
 
     private val textViewName: TextView
     private val textViewTitle: TextView
     private val textViewDescription: TextView
     private val imageViewArrow: ImageView
     private val constraintLayoutHeader: ConstraintLayout
-    private var isExpanded: Boolean = false
 
     init {
 
@@ -29,8 +28,7 @@ class ListItem(context: Context, attrs: AttributeSet?): FrameLayout(context, att
         textViewDescription = findViewById(R.id.textViewDescription)
         imageViewArrow = findViewById(R.id.imageViewArrow)
 
-        textViewDescription.layoutParams.height = 0
-        constraintLayoutHeader.setOnClickListener(this)
+        textViewDescription.visibility = GONE
 
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.ListItem)
         textViewName.text = attributes.getString(R.styleable.ListItem_personName)
@@ -52,24 +50,25 @@ class ListItem(context: Context, attrs: AttributeSet?): FrameLayout(context, att
         textViewDescription.text = description
     }
 
+    fun getArrowView(): View {
+        return imageViewArrow
+    }
+
+    fun getDescriptionView(): View {
+        return textViewDescription
+    }
+
     fun setExpanded(expanded: Boolean) {
-        isExpanded = expanded
-        if (isExpanded) {
-            imageViewArrow.animate().setDuration(200).rotation(180F)
-            textViewDescription.startAnimation(ExpandAnimation(textViewDescription))
+        if (expanded) {
+            imageViewArrow.rotation = 180F
+            textViewDescription.visibility = VISIBLE
         } else {
-            imageViewArrow.animate().setDuration(200).rotation(0F)
-            textViewDescription.startAnimation(CollapseAnimation(textViewDescription))
+            imageViewArrow.rotation = 0F
+            textViewDescription.visibility = GONE
         }
     }
 
     override fun setOnClickListener(listener: OnClickListener?) {
         constraintLayoutHeader.setOnClickListener(listener)
-    }
-
-    override fun onClick(v: View?) {
-        if (v?.id == R.id.constraintLayoutHeader) {
-            setExpanded(!isExpanded)
-        }
     }
 }
