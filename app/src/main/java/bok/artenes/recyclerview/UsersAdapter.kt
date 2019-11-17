@@ -3,13 +3,17 @@ package bok.artenes.recyclerview
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 /**
  * An adapter to display a list of tasks.
  */
-class UsersAdapter(val viewModel: MainActivityViewModel) : ListAdapter<UserItem, UsersAdapter.TaskViewHolder>(DIFF_CALLBACK) {
+class UsersAdapter(
+    private val viewModel: MainActivityViewModel,
+    private val recyclerView: RecyclerView
+) : RecyclerView.Adapter<UsersAdapter.TaskViewHolder>() {
+
+    private var list: List<UserItem> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = ListItem(parent.context)
@@ -20,11 +24,54 @@ class UsersAdapter(val viewModel: MainActivityViewModel) : ListAdapter<UserItem,
         return TaskViewHolder(view)
     }
 
+    fun submitList(newList: List<UserItem>) {
+        val diffResult = DiffUtil.calculateDiff(UserDiff(list, newList))
+        list = newList
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
+
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(position)
     }
 
-    inner class TaskViewHolder(private val listItem: ListItem) : RecyclerView.ViewHolder(listItem),  View.OnClickListener {
+    override fun onBindViewHolder(
+        holder: TaskViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+            return
+        }
+
+        when (val payload = payloads.last()) {
+            is CloseAnimationPayload -> {
+                ListItemCloseAnimation(holder.listItem, payload.duration).start()
+            }
+            is OpenAnimationPayload -> {
+                ListItemOpenAnimation(
+                    holder.listItem,
+                    recyclerView,
+                    position,
+                    payload.duration
+                ).also {
+                    it.startOffset = payload.delay
+                    it.start()
+                }
+            }
+        }
+    }
+
+    private fun getItem(position: Int): UserItem {
+        return list[position]
+    }
+
+    inner class TaskViewHolder(val listItem: ListItem) : RecyclerView.ViewHolder(listItem),
+        View.OnClickListener {
 
         fun bind(position: Int) {
             val user = getItem(position)
@@ -41,17 +88,58 @@ class UsersAdapter(val viewModel: MainActivityViewModel) : ListAdapter<UserItem,
 
     }
 
-    companion object {
+    data class CloseAnimationPayload(val duration: Long)
 
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserItem>() {
+    data class OpenAnimationPayload(val duration: Long, val delay: Long)
 
-            override fun areItemsTheSame(oldItem: UserItem, newItem: UserItem): Boolean {
-                return oldItem.id == newItem.id
+    class UserDiff(private val oldList: List<UserItem>, private val newList: List<UserItem>) :
+        DiffUtil.Callback() {
+
+        private val willCloseAnItemAndOpenAnother: Boolean
+
+        init {
+
+            val oldOpenIndex = oldList.indexOfFirst { it.expanded }
+            val newOpenIndex = newList.indexOfFirst { it.expanded }
+            willCloseAnItemAndOpenAnother =
+                (oldOpenIndex >= 0 && newOpenIndex >= 0) && (oldOpenIndex != newOpenIndex)
+
+        }
+
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].hashCode() == newList[newItemPosition].hashCode()
+        }
+
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            val willClose = oldList[oldItemPosition].expanded && !newList[newItemPosition].expanded
+            val willOpen = !oldList[oldItemPosition].expanded && newList[newItemPosition].expanded
+
+            if (willClose) {
+                return CloseAnimationPayload(ANIMATION_DURATION)
             }
 
-            override fun areContentsTheSame(oldItem: UserItem, newItem: UserItem): Boolean {
-                return oldItem == newItem
+            if (willOpen) {
+                val delay = if (willCloseAnItemAndOpenAnother) ANIMATION_DURATION else 0
+                return OpenAnimationPayload(ANIMATION_DURATION, delay)
             }
+
+            return null
+        }
+
+        companion object {
+            const val ANIMATION_DURATION = 250L
         }
 
     }

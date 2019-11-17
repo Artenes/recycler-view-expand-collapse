@@ -15,20 +15,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        val adapter = UsersAdapter(viewModel)
+        val adapter = UsersAdapter(viewModel, recyclerViewUser)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         recyclerViewUser.adapter = adapter
         recyclerViewUser.layoutManager = layoutManager
-        (recyclerViewUser.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
-        val animator = UserListToggleAnimator(recyclerViewUser)
 
         viewModel.getUsers().observe(this, Observer {
             adapter.submitList(it)
-        })
-
-        viewModel.getAnimateToggle().observe(this, Observer {
-            animator.animate(it)
         })
     }
 }
