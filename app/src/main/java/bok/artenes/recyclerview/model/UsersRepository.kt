@@ -1,7 +1,8 @@
-package bok.artenes.recyclerview
+package bok.artenes.recyclerview.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import bok.artenes.recyclerview.model.User
 
 class UsersRepository {
 

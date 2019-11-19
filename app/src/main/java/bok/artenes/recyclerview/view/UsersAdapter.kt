@@ -1,9 +1,11 @@
-package bok.artenes.recyclerview
+package bok.artenes.recyclerview.view
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import bok.artenes.recyclerview.viewmodel.MainActivityViewModel
+import bok.artenes.recyclerview.viewmodel.UserItem
 
 /**
  * An adapter to display a list of tasks.
@@ -25,7 +27,12 @@ class UsersAdapter(
     }
 
     fun submitList(newList: List<UserItem>) {
-        val diffResult = DiffUtil.calculateDiff(UserDiff(list, newList))
+        val diffResult = DiffUtil.calculateDiff(
+            UserDiff(
+                list,
+                newList
+            )
+        )
         list = newList
         diffResult.dispatchUpdatesTo(this)
     }
@@ -50,7 +57,10 @@ class UsersAdapter(
 
         when (val payload = payloads.last()) {
             is CloseAnimationPayload -> {
-                ListItemCloseAnimation(holder.listItem, payload.duration).start()
+                ListItemCloseAnimation(
+                    holder.listItem,
+                    payload.duration
+                ).start()
             }
             is OpenAnimationPayload -> {
                 ListItemOpenAnimation(
@@ -132,7 +142,10 @@ class UsersAdapter(
 
             if (willOpen) {
                 val delay = if (willCloseAnItemAndOpenAnother) ANIMATION_DURATION else 0
-                return OpenAnimationPayload(ANIMATION_DURATION, delay)
+                return OpenAnimationPayload(
+                    ANIMATION_DURATION,
+                    delay
+                )
             }
 
             return null

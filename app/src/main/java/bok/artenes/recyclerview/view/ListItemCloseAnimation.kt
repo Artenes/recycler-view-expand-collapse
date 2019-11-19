@@ -1,4 +1,4 @@
-package bok.artenes.recyclerview
+package bok.artenes.recyclerview.view
 
 import android.view.animation.Animation
 import android.view.animation.Transformation

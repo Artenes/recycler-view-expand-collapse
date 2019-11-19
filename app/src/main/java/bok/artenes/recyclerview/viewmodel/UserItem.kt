@@ -1,4 +1,6 @@
-package bok.artenes.recyclerview
+package bok.artenes.recyclerview.viewmodel
+
+import bok.artenes.recyclerview.model.User
 
 data class UserItem(
     val id: String,

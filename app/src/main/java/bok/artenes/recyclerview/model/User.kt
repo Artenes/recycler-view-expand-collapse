@@ -1,4 +1,4 @@
-package bok.artenes.recyclerview
+package bok.artenes.recyclerview.model
 
 import java.util.*
 

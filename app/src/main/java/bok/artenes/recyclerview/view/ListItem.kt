@@ -1,4 +1,4 @@
-package bok.artenes.recyclerview
+package bok.artenes.recyclerview.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import bok.artenes.recyclerview.R
 
 class ListItem(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
@@ -30,7 +31,9 @@ class ListItem(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
 
         textViewDescription.visibility = GONE
 
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.ListItem)
+        val attributes = context.obtainStyledAttributes(attrs,
+            R.styleable.ListItem
+        )
         textViewName.text = attributes.getString(R.styleable.ListItem_personName)
         textViewTitle.text = attributes.getString(R.styleable.ListItem_personTitle)
         textViewDescription.text = attributes.getString(R.styleable.ListItem_personDescription)

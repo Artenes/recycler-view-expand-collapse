@@ -1,9 +1,11 @@
-package bok.artenes.recyclerview
+package bok.artenes.recyclerview.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import bok.artenes.recyclerview.model.UsersRepository
+import bok.artenes.recyclerview.model.User
 
 class MainActivityViewModel : ViewModel() {
 
