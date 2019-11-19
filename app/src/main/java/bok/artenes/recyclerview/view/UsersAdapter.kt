@@ -67,11 +67,9 @@ class UsersAdapter(
                     holder.listItem,
                     recyclerView,
                     position,
-                    payload.duration
-                ).also {
-                    it.startOffset = payload.delay
-                    it.start()
-                }
+                    payload.duration,
+                    payload.delay
+                ).start()
             }
         }
     }

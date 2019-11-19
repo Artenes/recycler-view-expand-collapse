@@ -19,6 +19,12 @@ class ListItem(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
     private val imageViewArrow: ImageView
     private val constraintLayoutHeader: ConstraintLayout
 
+    val descriptionView: View
+        get() = textViewDescription
+
+    val arrowView: View
+        get() = imageViewArrow
+
     init {
 
         View.inflate(context, R.layout.list_item, this)
@@ -51,14 +57,6 @@ class ListItem(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
 
     fun setDescription(description: String) {
         textViewDescription.text = description
-    }
-
-    fun getArrowView(): View {
-        return imageViewArrow
-    }
-
-    fun getDescriptionView(): View {
-        return textViewDescription
     }
 
     fun setExpanded(expanded: Boolean) {

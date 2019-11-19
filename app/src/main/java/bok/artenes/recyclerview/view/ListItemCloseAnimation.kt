@@ -1,25 +1,18 @@
 package bok.artenes.recyclerview.view
 
-import android.view.animation.Animation
-import android.view.animation.Transformation
+import android.animation.ValueAnimator
 
-class ListItemCloseAnimation(private val listItem: ListItem, duration: Long) : Animation() {
+class ListItemCloseAnimation(private val listItem: ListItem, private val duration: Long) {
 
-    init {
-        this.duration = duration
-    }
-
-    override fun start() {
-        super.start()
-        listItem.getArrowView().animate().setDuration(duration).rotation(0F)
-        listItem.getDescriptionView().startAnimation(this)
-    }
-
-    override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
-        val view = listItem.getDescriptionView()
-        view.layoutParams.height =
-            view.measuredHeight - (view.measuredHeight * interpolatedTime).toInt()
-        view.requestLayout()
+    fun start() {
+        listItem.arrowView.animate().setDuration(duration).rotation(0F)
+        val closeAnimation = ValueAnimator.ofInt(listItem.descriptionView.measuredHeight, 0)
+        closeAnimation.duration = duration
+        closeAnimation.addUpdateListener { animation ->
+            listItem.descriptionView.layoutParams.height = animation.animatedValue as Int
+            listItem.descriptionView.requestLayout()
+        }
+        closeAnimation.start()
     }
 
 }
