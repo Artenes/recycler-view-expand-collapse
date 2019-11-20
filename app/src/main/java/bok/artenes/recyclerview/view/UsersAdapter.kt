@@ -83,10 +83,10 @@ class UsersAdapter(
 
         fun bind(position: Int) {
             val user = getItem(position)
-            listItem.setName(user.name)
-            listItem.setTitle(user.title)
-            listItem.setDescription(user.description)
-            listItem.setExpanded(user.expanded)
+            listItem.name = user.name
+            listItem.title = user.title
+            listItem.description = user.description
+            listItem.expanded = user.expanded
             listItem.setOnClickListener(this)
         }
 

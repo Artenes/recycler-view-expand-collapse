@@ -25,6 +25,36 @@ class ListItem(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
     val arrowView: View
         get() = imageViewArrow
 
+    var name: String
+        get() = textViewName.text.toString()
+        set(value) {
+            textViewName.text = value
+        }
+
+    var title: String
+        get() = textViewTitle.text.toString()
+        set(value) {
+            textViewTitle.text = value
+        }
+
+    var description: String
+        get() = textViewDescription.text.toString()
+        set(value) {
+            textViewDescription.text = value
+        }
+
+    var expanded: Boolean
+        get() = textViewDescription.visibility == View.VISIBLE
+        set(value) {
+            if (value) {
+                imageViewArrow.rotation = 180F
+                textViewDescription.visibility = VISIBLE
+            } else {
+                imageViewArrow.rotation = 0F
+                textViewDescription.visibility = GONE
+            }
+        }
+
     init {
 
         View.inflate(context, R.layout.list_item, this)
@@ -37,7 +67,8 @@ class ListItem(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
 
         textViewDescription.visibility = GONE
 
-        val attributes = context.obtainStyledAttributes(attrs,
+        val attributes = context.obtainStyledAttributes(
+            attrs,
             R.styleable.ListItem
         )
         textViewName.text = attributes.getString(R.styleable.ListItem_personName)
@@ -45,28 +76,6 @@ class ListItem(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
         textViewDescription.text = attributes.getString(R.styleable.ListItem_personDescription)
         attributes.recycle()
 
-    }
-
-    fun setName(name: String) {
-        textViewName.text = name
-    }
-
-    fun setTitle(title: String) {
-        textViewTitle.text = title
-    }
-
-    fun setDescription(description: String) {
-        textViewDescription.text = description
-    }
-
-    fun setExpanded(expanded: Boolean) {
-        if (expanded) {
-            imageViewArrow.rotation = 180F
-            textViewDescription.visibility = VISIBLE
-        } else {
-            imageViewArrow.rotation = 0F
-            textViewDescription.visibility = GONE
-        }
     }
 
     override fun setOnClickListener(listener: OnClickListener?) {
